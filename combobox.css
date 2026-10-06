@@ -1,0 +1,28 @@
+/* combobox.css — searchable dropdown widget styles.
+   Used by index.html (kept identical in both the Alcohol and Blood Pressure repos).
+   Uses each page's own --steel/--hair/--ink/--muted/--amber/--red vars
+   so it automatically matches that page's color theme. */
+
+.combobox{ position:relative; }
+.combobox input[type=text]{ width:100%; }
+.combobox input.combobox-invalid{ border-color:var(--red); background:#FEF4F3; }
+
+.combobox-list{
+  list-style:none; margin:4px 0 0; padding:4px;
+  position:absolute; left:0; right:0; top:100%; z-index:20;
+  max-height:220px; overflow-y:auto;
+  background:#fff; border:1.5px solid var(--steel); border-radius:8px;
+  box-shadow:0 10px 24px -10px rgba(16,24,32,0.35);
+  display:none;
+}
+.combobox-list.open{ display:block; }
+.combobox-list li{
+  padding:8px 10px; font-size:13.5px; border-radius:6px; cursor:pointer;
+  color:var(--ink);
+}
+.combobox-list li:hover, .combobox-list li.active{
+  background:var(--paper);
+}
+.combobox-error{
+  font-size:11.5px; color:var(--red); margin-top:4px; display:block; min-height:14px;
+}
