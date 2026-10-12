@@ -194,6 +194,13 @@
   }
   .lang-btn.active{background:var(--amber); color:#0E2138;}
   .lang-btn:not(.active):hover{color:#EAF0F6;}
+  .top-tools{display:flex; flex-direction:column; align-items:flex-end; gap:10px;}
+  .ver{font-family:var(--font-mono); font-size:11px; color:#8FA3B8; letter-spacing:.06em;}
+  .top-link{
+    font-family:var(--font-body); font-size:12.5px; font-weight:600; color:#EAF0F6; text-decoration:none;
+    border:1px solid var(--steel-line); border-radius:8px; padding:7px 14px; background:rgba(255,255,255,0.04);
+  }
+  .top-link:hover{border-color:var(--amber);}
 
   /* ---------- Add-project control ---------- */
   .add-inline{display:flex; gap:8px;}
@@ -211,16 +218,20 @@
 <header class="top">
   <div class="top-row">
     <div class="brand-block">
-      <img class="logo-mark" src="logo.png" alt="EcoOils Mentari">
+      <img class="logo-mark" src="logo%20(1).png" alt="EcoOils Mentari">
       <div>
         <p class="brand-eyebrow" data-i18n="eyebrow">PT EcoOils Jaya Indonesia · HSSE</p>
         <p class="brand-sub" data-i18n="subtitle">Mentari Project · Sei Mangkei</p>
         <h1 class="title" data-i18n="title">Alcohol Test Record</h1>
       </div>
     </div>
-    <div class="lang-toggle" role="group" aria-label="Language">
-      <button type="button" class="lang-btn active" data-lang="en">EN</button>
-      <button type="button" class="lang-btn" data-lang="bi">BI</button>
+    <div class="top-tools">
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" class="lang-btn active" data-lang="en">EN</button>
+        <button type="button" class="lang-btn" data-lang="bi">BI</button>
+      </div>
+      <div class="ver" id="ver"></div>
+      <a class="top-link" id="adminLink" href="https://iggifernandes.github.io/EcoOils-Project-Health-Monitoring/admin.html" data-i18n="admin">Admin</a>
     </div>
   </div>
 
@@ -353,9 +364,13 @@
   //    (Code.gs) for the doGet / doPost handlers this expects.
   const SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbytAJat3KB9WqhixDyEJXE-cORp_WN7p6_nK4X_fLcLZiRKqDmZFCWA9qJ-i7JZ_zSz/exec";
 
+  const APP_VERSION = "1.1.0";
+  document.getElementById('ver').textContent = "v" + APP_VERSION;
+
   // ── EN / BI translations for on-page labels ──────────────────────────
   const I18N = {
     en: {
+      admin: "Admin",
       eyebrow: "PT EcoOils Jaya Indonesia · HSSE",
       title: "Alcohol Test Record",
       subtitle: "Mentari Project · Sei Mangkei",
@@ -387,6 +402,7 @@
       testsOnRecord: "tests on record",
     },
     bi: {
+      admin: "Admin",
       eyebrow: "PT EcoOils Jaya Indonesia · HSSE",
       title: "Catatan Tes Alkohol",
       subtitle: "Proyek Mentari · Sei Mangkei",
