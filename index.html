@@ -6,234 +6,152 @@
 <title>Alcohol Test Record · Mentari Project</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="combobox.css">
 <style>
-  :root{
-    --navy:#0E2138;
-    --navy-2:#152C48;
-    --steel:#1C3A56;
-    --steel-line:#2A4A6B;
-    --amber:#FFB81C;
-    --amber-dim:#8a6414;
-    --green:#2E9E5B;
-    --green-glow:rgba(46,158,91,0.35);
-    --red:#D8453A;
-    --paper:#F3F5F7;
-    --card:#FFFFFF;
-    --ink:#101820;
-    --muted:#5B6B7C;
-    --hair:#E2E7EC;
-    --font-display:'Oswald',sans-serif;
-    --font-body:'Inter',sans-serif;
-    --font-mono:'JetBrains Mono',monospace;
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;
-    background:
-      linear-gradient(180deg, rgba(11,24,40,0.90) 0%, rgba(14,33,56,0.86) 40%, rgba(243,245,247,0.97) 78%, var(--paper) 100%),
-      url("https://upload.wikimedia.org/wikipedia/commons/7/7d/Duqm_Refinery.jpg") center 30%/cover fixed;
-    background-color:var(--paper);
-  }
-  @media (max-width:820px){
-    body{ background-attachment:scroll; }
-  }
-  a{color:inherit;}
+/* ===== EcoOils minimal Shell-style base (shared across all EcoOils apps) ===== */
+:root{
+  --green:#44a276; --green-tint:#e9f4ee; --yellow:#ffc600; --yellow-tint:#fff6d1;
+  --black:#231f20; --white:#fff; --grey:#aaaaaa; --grey-text:#6e6b6c; --line:#dcdcdc; --tint:#f6f6f6;
+  --err:#b3261e;
+  --font:Jost,system-ui,Arial,sans-serif;
+}
+*{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{margin:0;background:var(--white);color:var(--black);font-family:var(--font);font-size:16px;font-weight:400;line-height:1.5;overflow-x:hidden;position:relative;}
+/* corner watermark: 5 x 5 grey dot grid, behind content */
+body::after{content:"";position:fixed;right:-46px;bottom:-46px;width:150px;height:150px;opacity:.3;pointer-events:none;z-index:0;
+  background-image:radial-gradient(circle,var(--grey) 0 6px,transparent 6.5px);background-size:30px 30px;}
+.hdr,.wrap,main,footer{position:relative;z-index:1;}
+a{color:inherit;}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px;}
 
-  /* ---------- Header ---------- */
-  header.top{
-    background:linear-gradient(160deg,var(--navy) 0%,var(--navy-2) 65%,var(--steel) 100%);
-    color:#EAF0F6;
-    padding:24px clamp(14px,4vw,56px) 32px;
-    position:relative;
-    overflow:hidden;
-  }
-  @media (max-width:480px){ header.top{padding:18px 14px 26px;} }
-  header.top::after{
-    content:"";
-    position:absolute; inset:0;
-    background-image:
-      repeating-linear-gradient(115deg, rgba(255,184,28,0.05) 0px, rgba(255,184,28,0.05) 1px, transparent 1px, transparent 64px);
-    pointer-events:none;
-  }
-  .top-row{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap; position:relative; z-index:1;}
-  .brand-eyebrow{
-    font-family:var(--font-mono); font-size:11px; letter-spacing:.16em; text-transform:uppercase;
-    color:var(--amber); margin:0 0 8px;
-  }
-  h1.title{
-    font-family:var(--font-display); font-weight:700; font-size:clamp(19px,2.6vw,26px);
-    margin:6px 0 0; letter-spacing:.01em; line-height:1.15;
-  }
-  .brand-sub{color:#A9BBCC; font-size:13px; margin-top:0;}
+/* header: logo left; version above language toggle on the right */
+.hdr-in{max-width:780px;margin:0 auto;padding:14px 16px 0;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.logo{height:44px;width:auto;display:block;}
+.hdr-right{display:flex;flex-direction:column;align-items:flex-end;gap:2px;}
+.ver{font-size:14px;font-weight:400;color:var(--grey-text);letter-spacing:.06em;}
+.lang{display:flex;gap:2px;}
+.lang button{font-family:var(--font);font-size:15px;font-weight:500;color:var(--grey-text);background:none;border:0;border-bottom:3px solid transparent;padding:8px 8px 5px;min-height:40px;cursor:pointer;letter-spacing:.04em;}
+.lang button[aria-pressed="true"],.lang button.active{color:var(--black);border-bottom-color:var(--green);}
+.lang button:hover{color:var(--black);}
 
-  /* stat strip */
-  .stats{
-    display:grid; grid-template-columns:1.3fr repeat(3,1fr); gap:14px;
-    margin-top:28px; position:relative; z-index:1;
-  }
-  @media (max-width:820px){ .stats{grid-template-columns:1fr 1fr;} }
-  .stat-card{
-    background:rgba(255,255,255,0.045); border:1px solid var(--steel-line); border-radius:12px;
-    padding:16px 18px;
-  }
-  .stat-label{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.12em; text-transform:uppercase; color:#8FA3B8; margin:0 0 8px;}
-  .stat-value{font-family:var(--font-display); font-size:28px; font-weight:600; color:#EAF0F6;}
-  .stat-value small{font-family:var(--font-body); font-size:13px; color:#8FA3B8; font-weight:400;}
-  @media (max-width:480px){
-    .stat-value{font-size:22px;}
-    .stat-card{padding:12px 14px;}
-  }
+/* page title + rule */
+.titlebar{max-width:780px;margin:0 auto;position:relative;border-bottom:1px solid var(--black);}
+.titlebar::after{content:"";position:absolute;left:16px;bottom:-3px;width:44px;height:7px;background:var(--green);}
+.title{margin:0;padding:26px 16px 14px;font-family:var(--font);font-weight:300;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-text);line-height:1.25;}
+.subtitle{margin:0;padding:0 16px 14px;font-size:14px;color:var(--grey-text);}
 
-  /* readout: hero signature element */
-  .readout{
-    background:#08131F; border:1px solid #1E3A55; border-radius:12px; padding:16px 18px;
-    display:flex; flex-direction:column; justify-content:space-between; gap:10px;
-    box-shadow:inset 0 0 24px rgba(0,0,0,0.35);
-  }
-  .readout .stat-label{color:#5F8A6D;}
-  .readout-display{
-    font-family:var(--font-mono); font-weight:700; font-size:40px; color:var(--green);
-    text-shadow:0 0 14px var(--green-glow), 0 0 2px var(--green-glow);
-    letter-spacing:.02em; line-height:1;
-  }
-  @media (max-width:480px){ .readout-display{font-size:30px;} }
-  .readout-caption{font-size:11.5px; color:#6E8B9E; font-family:var(--font-mono);}
-  .blink-dot{display:inline-block; width:6px; height:6px; border-radius:50%; background:var(--green); margin-right:6px; box-shadow:0 0 6px var(--green); animation:pulse 2.2s ease-in-out infinite;}
-  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+/* content column */
+.wrap{max-width:780px;margin:0 auto;padding:28px 16px 80px;}
 
-  /* ---------- Layout ---------- */
-  main{max-width:1180px; margin:-18px auto 60px; padding:0 clamp(12px,4vw,32px); position:relative; z-index:2;}
-  .card{
-    background:var(--card); border:1px solid var(--hair); border-radius:14px;
-    box-shadow:0 1px 2px rgba(16,24,32,0.04), 0 12px 28px -18px rgba(16,24,32,0.18);
-    padding:20px clamp(14px,3vw,30px);
-    margin-bottom:18px;
-  }
-  @media (max-width:480px){ main{margin-top:-12px;} .card{border-radius:12px; padding:16px 14px;} }
-  .card h2{
-    font-family:var(--font-display); font-size:17px; font-weight:600; margin:0 0 4px;
-    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-  }
-  .card h2 .num{
-    font-family:var(--font-mono); font-size:12px; color:var(--amber-dim); background:#FFF4DC;
-    border-radius:6px; padding:2px 7px;
-  }
-  .card .sub{color:var(--muted); font-size:13.5px; margin:0 0 20px;}
+/* components */
+.card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:20px;}
+.btn{font-family:var(--font);font-size:16px;font-weight:600;min-height:44px;padding:10px 20px;border-radius:8px;border:1px solid var(--green);background:var(--green);color:var(--black);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background .15s;}
+.btn:hover{background:#3b9068;}
+.btn:disabled{background:var(--tint);border-color:var(--line);color:var(--grey);cursor:not-allowed;}
+.btn.sec{background:var(--white);border-color:var(--line);font-weight:500;}
+.btn.sec:hover{border-color:var(--black);background:var(--white);}
+.btn.key{background:var(--yellow);border-color:var(--yellow);}
+.btn.key:hover{background:#e8b300;}
+.pill{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;border:1px solid var(--line);border-radius:999px;padding:2px 10px;background:var(--white);}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--grey);}
+.pill.ok::before{background:var(--green);} .pill.wait::before{background:var(--yellow);} .pill.no::before{background:var(--grey);} .pill.out::before{background:var(--black);}
+.dots56{width:56px;height:56px;margin:0 auto 10px;background-image:radial-gradient(circle,var(--grey) 0 2.6px,transparent 3px);background-size:11.2px 11.2px;}
+.empty{text-align:center;color:var(--grey-text);font-weight:300;letter-spacing:.14em;text-transform:uppercase;font-size:14px;padding:28px 0;}
+@media (max-width:420px){ .title{font-size:18px;letter-spacing:.1em;} .lang button{font-size:14px;} .logo{height:38px;} }
+@media print{ body::after{display:none;} }
 
-  /* ---------- Form ---------- */
-  form#logForm{display:grid; grid-template-columns:repeat(3,1fr); gap:16px 18px;}
-  @media (max-width:760px){ form#logForm{grid-template-columns:1fr 1fr;} }
-  @media (max-width:520px){ form#logForm{grid-template-columns:1fr;} }
-  .field{display:flex; flex-direction:column; gap:6px;}
-  .field.span2{grid-column:span 2;}
-  .field.span3{grid-column:1/-1;}
-  @media (max-width:520px){ .field.span2, .field.span3{grid-column:1/-1;} }
-  label{font-size:12px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
-  input[type=text], input[type=date], input[type=time], textarea, select{
-    font-family:var(--font-body); font-size:14.5px; padding:10px 12px; border:1.5px solid var(--hair);
-    border-radius:8px; background:#FBFCFD; color:var(--ink); transition:border-color .15s, background .15s;
-  }
-  input:focus, textarea:focus, select:focus{
-    outline:none; border-color:var(--steel); background:#fff;
-  }
-  .outcome-toggle{display:flex; gap:8px;}
-  .outcome-toggle input{position:absolute; opacity:0; width:0; height:0;}
-  .outcome-toggle label{
-    flex:1; text-align:center; padding:10px 6px; border:1.5px solid var(--hair); border-radius:8px;
-    cursor:pointer; font-size:11px; font-weight:700; letter-spacing:.02em; color:var(--muted); text-transform:none;
-    transition:all .12s;
-  }
-  .outcome-toggle input:checked + label{border-color:transparent; color:#fff;}
-  .outcome-toggle input[value="Pass"]:checked + label{background:var(--green);}
-  .outcome-toggle input[value="Fail"]:checked + label{background:var(--red);}
-  .outcome-toggle input[value="N/A (Refused/Not Completed)"]:checked + label{background:#8a6414;}
+/* ---------- field app (shared by Blood Pressure and Alcohol) ---------- */
+:root{
+  /* names used by combobox.css, mapped to the Shell palette */
+  --steel:var(--black); --red:var(--err); --ink:var(--black); --paper:var(--tint); --muted:var(--grey-text);
+}
+.top-links{display:flex;gap:6px;justify-content:flex-end;margin-top:4px;}
+.btn.sm{min-height:36px;padding:5px 12px;font-size:14px;font-weight:500;}
+.eyebrow{margin:0 0 16px;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey-text);}
 
-  .form-actions{grid-column:1/-1; display:flex; align-items:center; gap:14px; margin-top:4px; flex-wrap:wrap;}
-  button.primary{
-    font-family:var(--font-body); font-weight:700; font-size:14.5px; color:#0E2138; background:var(--amber);
-    border:none; border-radius:9px; padding:12px 22px; cursor:pointer; letter-spacing:.01em;
-    transition:transform .1s, box-shadow .15s;
-  }
-  button.primary:hover{box-shadow:0 8px 18px -8px rgba(255,184,28,0.55); transform:translateY(-1px);}
-  button.primary:active{transform:translateY(0);}
-  button.primary:disabled{opacity:.55; cursor:not-allowed; box-shadow:none; transform:none;}
-  #formMsg{font-size:13px; color:var(--muted);}
-  #formMsg.ok{color:var(--green); font-weight:600;}
-  #formMsg.err{color:var(--red); font-weight:600;}
+/* stat tiles */
+.stats{display:grid;grid-template-columns:1.2fr repeat(3,1fr);gap:12px;margin-bottom:20px;}
+@media (max-width:640px){ .stats{grid-template-columns:1fr 1fr;} }
+.stat-card{background:var(--white);border:1px solid var(--line);border-radius:8px;padding:14px 16px;}
+.stat-label{font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--grey-text);margin:0 0 6px;}
+.stat-value,.readout-display{font-size:30px;font-weight:500;line-height:1.1;color:var(--black);}
+.readout-display{color:var(--green);}
+.readout-caption{font-size:14px;color:var(--grey-text);margin:4px 0 0;min-height:21px;}
+.blink-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:6px;}
 
-  footer{text-align:center; color:var(--muted); font-size:12px; padding:20px; font-family:var(--font-mono);}
+/* cards */
+.card{margin-bottom:16px;}
+.card h2{font-size:19px;font-weight:500;margin:0 0 4px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.card h2 .num{font-size:13px;font-weight:500;letter-spacing:.06em;color:var(--black);background:var(--yellow-tint);border-radius:6px;padding:1px 8px;}
+.card .sub{color:var(--grey-text);font-size:15px;margin:0 0 18px;}
 
-  /* ---------- Contractor chart ---------- */
-  .contractor-chart{display:flex; flex-direction:column; gap:10px;}
-  .bar-row{display:grid; grid-template-columns:110px 1fr 32px; align-items:center; gap:10px;}
-  @media (max-width:600px){ .bar-row{grid-template-columns:88px 1fr 28px;} }
-  .bar-label{font-size:13px; font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .bar-track{background:#EEF2F6; border-radius:4px; height:12px; overflow:hidden;}
-  .bar-fill{
-    height:100%; border-radius:4px; background:var(--amber);
-    transition:width .4s ease; min-width:3px;
-  }
-  .bar-count{font-family:var(--font-mono); font-weight:700; font-size:13px; color:var(--steel); text-align:right;}
-  .chart-empty{color:var(--muted); font-size:13.5px; padding:10px 0;}
+/* form */
+form#logForm{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+@media (max-width:560px){ form#logForm{grid-template-columns:1fr;} }
+.field{display:flex;flex-direction:column;gap:6px;min-width:0;}
+.field.span2,.field.span3{grid-column:1/-1;}
+label{font-size:13px;font-weight:500;color:var(--grey-text);text-transform:uppercase;letter-spacing:.1em;}
+input[type=text],input[type=date],input[type=time],input[type=number],textarea,select{
+  font-family:var(--font);font-size:16px;min-height:44px;padding:8px 12px;border:1px solid var(--line);
+  border-radius:8px;background:var(--white);color:var(--black);width:100%;transition:border-color .15s;}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--black);box-shadow:0 0 0 2px var(--green);}
+.outcome-toggle{display:flex;flex-wrap:wrap;gap:8px;}
+.outcome-toggle input{position:absolute;opacity:0;width:0;height:0;}
+.outcome-toggle label{flex:1 1 130px;text-align:center;padding:10px 6px;min-height:44px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:16px;font-weight:500;color:var(--black);text-transform:none;letter-spacing:0;background:var(--white);transition:background .15s;}
+.outcome-toggle input:focus-visible + label{outline:3px solid var(--green);outline-offset:2px;}
+.outcome-toggle input:checked + label{border-color:var(--black);}
+.outcome-toggle input[value="Go"]:checked + label,.outcome-toggle input[value="Pass"]:checked + label{background:var(--green);color:var(--black);border-color:var(--green);font-weight:600;}
+.outcome-toggle input[value="No Go"]:checked + label,.outcome-toggle input[value="Fail"]:checked + label{background:var(--black);color:var(--white);font-weight:600;}
+.outcome-toggle input[value^="N/A"]:checked + label{background:var(--yellow);border-color:var(--yellow);color:var(--black);font-weight:600;}
+.form-actions{grid-column:1/-1;display:flex;align-items:center;gap:14px;margin-top:4px;flex-wrap:wrap;}
+#formMsg{font-size:15px;color:var(--grey-text);}
+#formMsg.ok{color:var(--black);font-weight:600;}
+#formMsg.ok::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:8px;}
+#formMsg.err{color:var(--err);font-weight:600;}
+.bp-pair{display:flex;align-items:center;gap:8px;}
+.bp-pair input{flex:1;min-width:0;}
+.bp-slash{font-weight:500;color:var(--grey-text);font-size:22px;}
+.add-inline{display:flex;gap:8px;}
+.add-inline select{flex:1;}
+.btn-add{font-family:var(--font);font-weight:500;font-size:15px;color:var(--black);background:var(--white);border:1px solid var(--line);border-radius:8px;padding:0 14px;min-height:44px;cursor:pointer;white-space:nowrap;}
+.btn-add:hover{border-color:var(--black);}
 
-  /* ---------- Brand / logo ---------- */
-  .brand-block{display:flex; flex-direction:column; align-items:flex-start; gap:10px;}
-  .logo-mark{height:54px; width:auto; display:block; flex:0 0 auto;}
-  @media (max-width:520px){ .logo-mark{height:40px;} }
+/* month by contractor */
+.contractor-chart{display:flex;flex-direction:column;gap:12px;}
+.bar-row{display:grid;grid-template-columns:110px 1fr 36px;align-items:center;gap:10px;}
+@media (max-width:600px){ .bar-row{grid-template-columns:92px 1fr 32px;} }
+.bar-label{font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bar-track{background:var(--tint);border-radius:4px;height:12px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:4px;background:var(--green);transition:width .4s ease;min-width:3px;}
+.bar-count{font-weight:600;font-size:15px;text-align:right;}
+.chart-empty{text-align:center;color:var(--grey-text);font-weight:300;letter-spacing:.14em;text-transform:uppercase;font-size:14px;padding:18px 0;}
+.chart-empty::before{content:"";display:block;width:56px;height:56px;margin:0 auto 10px;background-image:radial-gradient(circle,var(--grey) 0 2.6px,transparent 3px);background-size:11.2px 11.2px;}
+footer{text-align:center;color:var(--grey-text);font-size:14px;padding:20px;}
 
-  /* ---------- Language toggle ---------- */
-  .lang-toggle{
-    display:flex; border:1px solid var(--steel-line); border-radius:9px; overflow:hidden;
-    background:rgba(255,255,255,0.04); flex:0 0 auto;
-  }
-  .lang-btn{
-    font-family:var(--font-mono); font-size:12px; font-weight:700; letter-spacing:.04em;
-    color:#8FA3B8; background:transparent; border:none; padding:8px 14px; cursor:pointer;
-  }
-  .lang-btn.active{background:var(--amber); color:#0E2138;}
-  .lang-btn:not(.active):hover{color:#EAF0F6;}
-  .top-tools{display:flex; flex-direction:column; align-items:flex-end; gap:10px;}
-  .ver{font-family:var(--font-mono); font-size:11px; color:#8FA3B8; letter-spacing:.06em;}
-  .top-link{
-    font-family:var(--font-body); font-size:12.5px; font-weight:600; color:#EAF0F6; text-decoration:none;
-    border:1px solid var(--steel-line); border-radius:8px; padding:7px 14px; background:rgba(255,255,255,0.04);
-  }
-  .top-link:hover{border-color:var(--amber);}
-
-  /* ---------- Add-project control ---------- */
-  .add-inline{display:flex; gap:8px;}
-  .add-inline select{flex:1;}
-  .btn-add{
-    font-family:var(--font-body); font-weight:700; font-size:13px; color:var(--steel);
-    background:#EAF0F6; border:1.5px solid var(--hair); border-radius:8px; padding:0 14px; cursor:pointer;
-    white-space:nowrap;
-  }
-  .btn-add:hover{border-color:var(--steel);}
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="top-row">
-    <div class="brand-block">
-      <img class="logo-mark" src="logo%20(1).png" alt="EcoOils Mentari">
-      <div>
-        <p class="brand-eyebrow" data-i18n="eyebrow">PT EcoOils Jaya Indonesia · HSSE</p>
-        <p class="brand-sub" data-i18n="subtitle">Mentari Project · Sei Mangkei</p>
-        <h1 class="title" data-i18n="title">Alcohol Test Record</h1>
-      </div>
-    </div>
-    <div class="top-tools">
-      <div class="lang-toggle" role="group" aria-label="Language">
-        <button type="button" class="lang-btn active" data-lang="en">EN</button>
-        <button type="button" class="lang-btn" data-lang="bi">BI</button>
-      </div>
+<header class="hdr">
+  <div class="hdr-in">
+    <img class="logo" src="logo%20(1).png" alt="EcoOils">
+    <div class="hdr-right">
       <div class="ver" id="ver"></div>
-      <a class="top-link" id="adminLink" href="https://iggifernandes.github.io/EcoOils-Project-Health-Monitoring/admin.html" data-i18n="admin">Admin</a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" class="lang-btn active" data-lang="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-btn" data-lang="bi" aria-pressed="false">ID</button>
+        <button type="button" class="lang-btn" data-lang="ms" aria-pressed="false">MS</button>
+      </div>
+      <div class="top-links"><a class="btn sec sm" id="adminLink" href="https://iggifernandes.github.io/EcoOils-Project-Health-Monitoring/admin.html" data-i18n="admin">Admin</a></div>
     </div>
   </div>
+  <div class="titlebar"><h1 class="title" data-i18n="title">Alcohol Test Record</h1></div>
+</header>
+
+<main class="wrap">
+  <p class="eyebrow"><span data-i18n="eyebrow">PT EcoOils Jaya Indonesia · HSSE</span> · <span data-i18n="subtitle">Mentari Project · Sei Mangkei</span></p>
 
   <div class="stats">
     <div class="stat-card readout">
@@ -254,9 +172,6 @@
       <div class="stat-value" id="statMonth">–</div>
     </div>
   </div>
-</header>
-
-<main>
 
   <section class="card">
     <h2><span data-i18n="monthByContractor">This month by contractor</span> <span class="num" id="monthTotalBadge">0</span></h2>
@@ -344,7 +259,7 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="primary" id="submitBtn" data-i18n="logRecordBtn">Log test record</button>
+        <button type="submit" class="btn key" id="submitBtn" data-i18n="logRecordBtn">Log test record</button>
         <span id="formMsg"></span>
       </div>
     </form>
@@ -364,7 +279,7 @@
   //    (Code.gs) for the doGet / doPost handlers this expects.
   const SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbytAJat3KB9WqhixDyEJXE-cORp_WN7p6_nK4X_fLcLZiRKqDmZFCWA9qJ-i7JZ_zSz/exec";
 
-  const APP_VERSION = "1.1.0";
+  const APP_VERSION = "1.2.0";
   document.getElementById('ver').textContent = "v" + APP_VERSION;
 
   // ── EN / BI translations for on-page labels ──────────────────────────
@@ -432,9 +347,43 @@
       unreachable: "Tidak dapat terhubung ke Google Sheets — data tidak tersimpan.",
       setUrlFirst: "Atur SHEETS_WEBHOOK_URL terlebih dahulu — belum ada tempat untuk menyimpan.",
       testsOnRecord: "tes tercatat",
+    },
+    ms: {
+      admin: "Admin",
+      eyebrow: "PT EcoOils Jaya Indonesia · HSSE",
+      title: "Rekod Ujian Alkohol",
+      subtitle: "Projek Mentari · Sei Mangkei",
+      livePassRate: "Kadar lulus (terkini)",
+      totalTests: "Jumlah ujian direkodkan",
+      failsRefused: "Gagal / menolak",
+      loggedMonth: "Direkodkan bulan ini",
+      logTest: "Rekod ujian baharu",
+      monthByContractor: "Bulan ini mengikut kontraktor",
+      testsThisMonth: "ujian bulan ini",
+      noDataMonth: "Belum ada ujian direkodkan bulan ini.",
+      fDate: "Tarikh *", fTime: "Masa *",
+      fContractor: "Kontraktor *", selectContractor: "Pilih kontraktor…",
+      other: "Lain-lain…", contractorNamePlaceholder: "Nama kontraktor",
+      fEmployee: "Nama pekerja *", fullName: "Nama penuh",
+      fEmployeeId: "ID Pekerja (cth. KTP) *", idPlaceholder: "Nombor ID / permit",
+      fPosition: "Jawatan *", positionPlaceholder: "Cari jawatan…",
+      fCraft: "Kemahiran / Disiplin *", craftPlaceholder: "Cari kemahiran / disiplin…",
+      pickFromList: "mesti dipilih daripada senarai.",
+      fResult: "Keputusan breathalyzer *",
+      fOutcome: "Hasil ujian *", pass: "Lulus", fail: "Gagal", na: "N/A (Menolak / Tidak Selesai)",
+      fTester: "Nama penguji *",
+      fTesterPosition: "Jawatan penguji *", testerPositionPlaceholder: "cth. Pegawai HSSE",
+      fNotes: "Nota / komen", optional: "Pilihan",
+      logRecordBtn: "Rekod keputusan ujian",
+      savingSheets: "Menyimpan ke Google Sheets…", loggedOk: "Direkodkan ke Google Sheets ✓",
+      unreachable: "Tidak dapat menghubungi Google Sheets — tiada apa disimpan.",
+      setUrlFirst: "Tetapkan SHEETS_WEBHOOK_URL dahulu — belum ada tempat untuk menyimpan.",
+      testsOnRecord: "ujian dalam rekod",
     }
   };
   let currentLang = "en";
+  try { const sl = localStorage.getItem("ecooilsLang"); if(sl && I18N[sl]) currentLang = sl; } catch(e){}
+  const HTML_LANG = { en:"en", bi:"id", ms:"ms" };
   function T(){ return I18N[currentLang]; }
 
   function applyLang(){
@@ -447,8 +396,11 @@
       const key = el.dataset.i18nPlaceholder;
       if(dict[key] !== undefined) el.placeholder = dict[key];
     });
+    document.documentElement.lang = HTML_LANG[currentLang];
     document.querySelectorAll('.lang-btn').forEach(b=>{
-      b.classList.toggle('active', b.dataset.lang===currentLang);
+      const on = b.dataset.lang===currentLang;
+      b.classList.toggle('active', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     updateStats();
   }
@@ -456,6 +408,7 @@
   document.querySelectorAll('.lang-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       currentLang = btn.dataset.lang;
+      try { localStorage.setItem("ecooilsLang", currentLang); } catch(e){}
       applyLang();
     });
   });
@@ -544,7 +497,7 @@
     document.getElementById('statMonth').textContent = thisMonth.toLocaleString();
     document.getElementById('readoutPassRate').textContent = total ? passRate + "%" : "--.-%";
     document.getElementById('readoutCaption').textContent = total ? (total + " " + T().testsOnRecord) : "";
-    document.getElementById('readoutPassRate').style.color = fails===0 && total>0 ? "var(--green)" : "var(--amber)";
+    document.getElementById('readoutPassRate').style.color = fails===0 && total>0 ? "var(--green)" : "var(--black)";
     renderContractorChart();
   }
 
@@ -560,7 +513,7 @@
     document.getElementById('statMonth').textContent = thisMonth.toLocaleString();
     document.getElementById('readoutPassRate').textContent = passRate + "%";
     document.getElementById('readoutCaption').textContent = total + " " + T().testsOnRecord;
-    document.getElementById('readoutPassRate').style.color = fails===0 ? "var(--green)" : "var(--amber)";
+    document.getElementById('readoutPassRate').style.color = fails===0 ? "var(--green)" : "var(--black)";
     renderBars(isBaselineMonth ? BASELINE_MONTH_CONTRACTORS : {}, thisMonth);
   }
 
@@ -660,6 +613,7 @@
 
   // ── Init
   renderBaselineStats();
+  applyLang();
   loadFromSheets();
 })();
 </script>
